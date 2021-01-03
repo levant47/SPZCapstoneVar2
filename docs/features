@@ -1,0 +1,14 @@
+* adding elements to the design
+    - a basic library of logic gates
+    - inputs, outputs
+* adding connections (wires) between elements
+* moving elements
+    - preserving connections between moved elements
+* editing elements
+    - number of inputs
+* editing connections
+* simulation
+    - setting and changing input signals
+    - displaying the output signals
+* add more basic elements
+
