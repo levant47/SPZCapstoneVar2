@@ -1,4 +1,5 @@
 ﻿using SPZCapstoneVar2.Models;
+using SPZCapstoneVar2.UserControls;
 using SPZCapstoneVar2.Utilities;
 using System;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SPZCapstoneVar2
 {
@@ -47,11 +49,34 @@ namespace SPZCapstoneVar2
             eventArgs.Effects = DragDropEffects.Move;
         }
 
+        private void HandleConnectionMouseLeftButtonDown(object sender, MouseButtonEventArgs eventArgs)
+        {
+            var mousePosition = Mouse.GetPosition(DesignCanvas);
+            var (mousePositionX, mousePositionY) = (mousePosition.X, mousePosition.Y);
+            Debugger.Log(0, null, $"({mousePositionX}, {mousePositionY})");
+            var wire = new WireUserControl { RenderTransform = new TranslateTransform(mousePositionX, mousePositionY) };
+            Canvas.SetLeft(wire, mousePositionX);
+            Canvas.SetTop(wire, mousePositionY);
+            MouseEventHandler dragHandler = (object _sender1, MouseEventArgs eventArgs1) =>
+            {
+                var mousePositionX1 = eventArgs1.GetPosition(DesignCanvas).X;
+                var newWidth = Math.Max(mousePositionX1 - mousePositionX, 0);
+                wire.RenderTransform = new ScaleTransform(newWidth, 1);
+            };
+            DesignCanvas.MouseMove += dragHandler;
+            MouseButtonEventHandler dragStopHandler = (object _sender2, MouseButtonEventArgs eventArgs2) =>
+            {
+                DesignCanvas.MouseMove -= dragHandler;
+            };
+            DesignCanvas.MouseLeftButtonUp += dragStopHandler;
+            DesignCanvas.Children.Add(wire);
+        }
+
         private void HandleDesignFrameDrop(object sender, DragEventArgs eventArgs)
         {
             var elementType = Enum.Parse<ElementType>((string)eventArgs.Data.GetData(DataFormats.Text));
             var mousePosition = eventArgs.GetPosition(DesignCanvas);
-            DesignCanvas.Children.Add(ElementRenderer.Render(new Element
+            DesignCanvas.Children.Add(ElementRenderer.Render(HandleConnectionMouseLeftButtonDown, new Element
             {
                 Type = elementType,
                 PositionX = mousePosition.X,

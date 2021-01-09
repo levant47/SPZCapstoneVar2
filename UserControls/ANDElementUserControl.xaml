@@ -13,9 +13,9 @@
         </Grid.RowDefinitions>
         <Rectangle HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="80" Margin="-41,-48,0,0" Grid.RowSpan="2"/>
         <Label Content="&amp;&#xD;&#xA;" HorizontalAlignment="Left" Margin="-20,-25,0,0" VerticalAlignment="Top" FontSize="36" Grid.RowSpan="2" Height="56"/>
-        <Ellipse HorizontalAlignment="Left" Height="6" Margin="-43,-26,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
-        <Ellipse HorizontalAlignment="Left" Height="6" Margin="-43,9,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black" Grid.Row="1"/>
-        <Ellipse HorizontalAlignment="Left" Height="6" Margin="35,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
+        <Ellipse x:Name="InputPoint1" HorizontalAlignment="Left" Height="6" Margin="-43,-26,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
+        <Ellipse x:Name="InputPoint2" HorizontalAlignment="Left" Height="6" Margin="-43,9,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black" Grid.Row="1"/>
+        <Ellipse x:Name="OutputPoint" HorizontalAlignment="Left" Height="6" Margin="35,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
 
     </Grid>
 </UserControl>
