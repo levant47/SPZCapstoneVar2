@@ -53,14 +53,13 @@ namespace SPZCapstoneVar2
         {
             var mousePosition = Mouse.GetPosition(DesignCanvas);
             var (mousePositionX, mousePositionY) = (mousePosition.X, mousePosition.Y);
-            Debugger.Log(0, null, $"({mousePositionX}, {mousePositionY})");
             var wire = new WireUserControl { RenderTransform = new TranslateTransform(mousePositionX, mousePositionY) };
             Canvas.SetLeft(wire, mousePositionX);
             Canvas.SetTop(wire, mousePositionY);
             MouseEventHandler dragHandler = (object _sender1, MouseEventArgs eventArgs1) =>
             {
                 var mousePositionX1 = eventArgs1.GetPosition(DesignCanvas).X;
-                var newWidth = Math.Max(mousePositionX1 - mousePositionX, 0);
+                var newWidth = mousePositionX1 - mousePositionX;
                 wire.RenderTransform = new ScaleTransform(newWidth, 1);
             };
             DesignCanvas.MouseMove += dragHandler;
