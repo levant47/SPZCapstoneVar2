@@ -7,7 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UserControls\ANDElementUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\NOTElementUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ORElementUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ANDElementUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\NOTElementUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ORElementUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

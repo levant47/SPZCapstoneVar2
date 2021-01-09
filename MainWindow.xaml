@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox Margin="0,0,620,0"/>
-
+        <ListBox Name="ElementList" HorizontalAlignment="Left" Width="143" />
+        <Canvas Name="DesignCanvas" Background="White" Margin="148,10,0,0"/>
     </Grid>
 </Window>
