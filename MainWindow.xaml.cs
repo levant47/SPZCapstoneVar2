@@ -51,16 +51,10 @@ namespace SPZCapstoneVar2
 
         private void HandleConnectionMouseLeftButtonDown(object sender, MouseButtonEventArgs eventArgs)
         {
-            var mousePosition = Mouse.GetPosition(DesignCanvas);
-            var (mousePositionX, mousePositionY) = (mousePosition.X, mousePosition.Y);
-            var wire = new WireUserControl { RenderTransform = new TranslateTransform(mousePositionX, mousePositionY) };
-            Canvas.SetLeft(wire, mousePositionX);
-            Canvas.SetTop(wire, mousePositionY);
+            var wire = new WireUserControl(Mouse.GetPosition(DesignCanvas));
             MouseEventHandler dragHandler = (object _sender1, MouseEventArgs eventArgs1) =>
             {
-                var mousePositionX1 = eventArgs1.GetPosition(DesignCanvas).X;
-                var newWidth = mousePositionX1 - mousePositionX;
-                wire.RenderTransform = new ScaleTransform(newWidth, 1);
+                wire.PointTo(eventArgs1.GetPosition(DesignCanvas));
             };
             DesignCanvas.MouseMove += dragHandler;
             MouseButtonEventHandler dragStopHandler = (object _sender2, MouseButtonEventArgs eventArgs2) =>

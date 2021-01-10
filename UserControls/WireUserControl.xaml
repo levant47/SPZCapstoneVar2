@@ -7,7 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Rectangle HorizontalAlignment="Left" Height="1" Stroke="Black" VerticalAlignment="Top" Width="1"/>
+        <Rectangle x:Name="Horiz1" HorizontalAlignment="Left" Height="1" Stroke="Black" VerticalAlignment="Top" Width="1"/>
+        <Rectangle x:Name="Vert" HorizontalAlignment="Center" Height="1" Stroke="Black" VerticalAlignment="Center" Width="1"/>
+        <Rectangle x:Name="Horiz2" HorizontalAlignment="Center" Height="1" Stroke="Black" VerticalAlignment="Center" Width="1"/>
 
     </Grid>
 </UserControl>
