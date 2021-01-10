@@ -20,6 +20,7 @@ namespace SPZCapstoneVar2
         {
             switch (targetElement.Type)
             {
+                case ElementType.INPUT_ELEMENT: return targetElement.InputElementValue;
                 case ElementType.OUTPUT_ELEMENT:
                 {
                     var relatedInputId = _connections.FirstOrDefault(connection => connection.ToId == targetElement.Id)?.FromId;
@@ -30,7 +31,17 @@ namespace SPZCapstoneVar2
                     var relatedInput = _elements.First(element => element.Id == relatedInputId);
                     return CalculateValueFor(relatedInput);
                 }
-                case ElementType.INPUT_ELEMENT: return targetElement.InputElementValue;
+                case ElementType.AND_GATE:
+                {
+                    var inputValues = _connections.Where(connection => connection.ToId == targetElement.Id)
+                        .Select(connection => CalculateValueFor(_elements.First(element => element.Id == connection.FromId)))
+                        .ToList();
+                    if (inputValues.Count == 0 || inputValues.Any(value => value == null))
+                    {
+                        return null;
+                    }
+                    return inputValues.All(value => value == true);
+                }
                 default: throw new NotImplementedException();
             }
         }
