@@ -10,6 +10,9 @@
     <Compile Update="UserControls\ANDElementUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ConnectionPinUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\NOTElementUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -25,6 +28,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ANDElementUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ConnectionPinUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\NOTElementUserControl.xaml">

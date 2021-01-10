@@ -1,17 +1,20 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace SPZCapstoneVar2.UserControls
 {
-    public partial class ANDElementUserControl : UserControl
+    public partial class ANDElementUserControl : UserControl, IElementUserControl
     {
         public ANDElementUserControl(MouseButtonEventHandler connectionMouseLeftButtonDownHandler)
         {
             InitializeComponent();
 
-            InputPoint1.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
-            InputPoint2.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
-            OutputPoint.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
+            InputPin1.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
+            InputPin2.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
+            OutputPin.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
         }
+
+        public List<ConnectionPinUserControl> GetConnectionPins() => new List<ConnectionPinUserControl> { InputPin1, InputPin2, OutputPin };
     }
 }

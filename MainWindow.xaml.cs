@@ -2,12 +2,14 @@
 using SPZCapstoneVar2.UserControls;
 using SPZCapstoneVar2.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace SPZCapstoneVar2
 {
@@ -22,6 +24,7 @@ namespace SPZCapstoneVar2
             DesignCanvas.AllowDrop = true;
             DesignCanvas.DragOver += HandleDesignFrameDragOver;
             DesignCanvas.PreviewDrop += HandleDesignFrameDrop;
+            DesignCanvas.MouseMove += HandleDesignCanvasMouseMove;
         }
 
         private void InitializeElementPanel()
@@ -35,6 +38,32 @@ namespace SPZCapstoneVar2
                     var item = new ListBoxItem { Content = description, DataContext = variant.ToString() };
                     item.PreviewMouseLeftButtonDown += HandleElementListItemDragEnter;
                     ElementList.Items.Add(item);
+                });
+        }
+
+        private void HandleDesignCanvasMouseMove(object sender, MouseEventArgs eventArgs)
+        {
+            DesignCanvas.Children
+                .Cast<object>()
+                .Where(child => child is IElementUserControl)
+                .Cast<IElementUserControl>()
+                .SelectMany(elementUserControl => elementUserControl.GetConnectionPins())
+                .ForEach(connectionPin =>
+                {
+                    if (connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null)
+                    {
+                        if (!connectionPin.IsHighlighted)
+                        {
+                            connectionPin.IsHighlighted = true;
+                        }
+                    }
+                    else
+                    {
+                        if (connectionPin.IsHighlighted)
+                        {
+                            connectionPin.IsHighlighted = false;
+                        }
+                    }
                 });
         }
 

@@ -7,15 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="17*"/>
-            <RowDefinition Height="433*"/>
-        </Grid.RowDefinitions>
         <Rectangle HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="80" Margin="-41,-48,0,0" Grid.RowSpan="2"/>
         <Label Content="&amp;&#xD;&#xA;" HorizontalAlignment="Left" Margin="-20,-25,0,0" VerticalAlignment="Top" FontSize="36" Grid.RowSpan="2" Height="56"/>
-        <Ellipse x:Name="InputPoint1" HorizontalAlignment="Left" Height="6" Margin="-43,-26,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
-        <Ellipse x:Name="InputPoint2" HorizontalAlignment="Left" Height="6" Margin="-43,9,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black" Grid.Row="1"/>
-        <Ellipse x:Name="OutputPoint" HorizontalAlignment="Left" Height="6" Margin="35,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
+        <local:ConnectionPinUserControl x:Name="OutputPin" HorizontalAlignment="Left" Height="101" Margin="35.5,-3,0,0" VerticalAlignment="Top" Width="100" Grid.RowSpan="2"/>
+        <local:ConnectionPinUserControl x:Name="InputPin1" HorizontalAlignment="Left" Height="6" Margin="-44,25,0,0" VerticalAlignment="Top" Width="6"/>
+        <local:ConnectionPinUserControl x:Name="InputPin2" HorizontalAlignment="Left" Height="6" Margin="-44,-25,0,0" VerticalAlignment="Top" Width="6"/>
 
     </Grid>
 </UserControl>
