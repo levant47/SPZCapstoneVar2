@@ -8,13 +8,15 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace SPZCapstoneVar2
 {
     public partial class MainWindow : Window
     {
+        private int NextId = 1;
+        private readonly Dictionary<UIElement, Element> _elements = new Dictionary<UIElement, Element>();
+        private readonly List<Connection> _connections = new List<Connection>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -80,6 +82,13 @@ namespace SPZCapstoneVar2
 
         private void HandleConnectionMouseLeftButtonDown(object sender, MouseButtonEventArgs eventArgs)
         {
+            var originElement = DesignCanvas.Children
+                .Cast<object>()
+                .Where(child => child is IElementUserControl)
+                .Cast<UIElement>()
+                .First(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
+            var originElementId = _elements[originElement].Id;
+
             var wire = new WireUserControl(Mouse.GetPosition(DesignCanvas));
             MouseEventHandler dragHandler = (object _sender1, MouseEventArgs eventArgs1) =>
             {
@@ -99,7 +108,17 @@ namespace SPZCapstoneVar2
                 if (!doesWireConnectToAnInputPin)
                 {
                     DesignCanvas.Children.Remove(wire);
+                    return;
                 }
+
+                var destinationElement = DesignCanvas.Children
+                    .Cast<object>()
+                    .Where(child => child is IElementUserControl)
+                    .Cast<UIElement>()
+                    .First(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
+                var destinationElementId = _elements[destinationElement].Id;
+
+                _connections.Add(new Connection { FromId = originElementId, ToId = destinationElementId });
             }
             DesignCanvas.MouseLeftButtonUp += dragStopHandler;
             DesignCanvas.Children.Add(wire);
@@ -109,12 +128,30 @@ namespace SPZCapstoneVar2
         {
             var elementType = Enum.Parse<ElementType>((string)eventArgs.Data.GetData(DataFormats.Text));
             var mousePosition = eventArgs.GetPosition(DesignCanvas);
-            DesignCanvas.Children.Add(ElementRenderer.Render(HandleConnectionMouseLeftButtonDown, new Element
+            var newElement = new Element
             {
+                Id = NextId,
                 Type = elementType,
                 PositionX = mousePosition.X,
                 PositionY = mousePosition.Y,
-            }));
+            };
+            NextId++;
+            var renderedElement = ElementRenderer.Render(HandleConnectionMouseLeftButtonDown, newElement);
+            _elements.Add(renderedElement, newElement);
+            DesignCanvas.Children.Add(renderedElement);
+        }
+
+        private void SimulateButton_Click(object sender, RoutedEventArgs e)
+        {
+            var schemaSimulation = new SchemaSimulation(_elements.Values.ToList(), _connections);
+            DesignCanvas.Children
+                .Cast<UIElement>()
+                .Where(uiElement => uiElement is OutputElementUserControl)
+                .Cast<OutputElementUserControl>()
+                .ForEach(outputElement =>
+                {
+                    outputElement.Value = schemaSimulation.CalculateValueFor(_elements[outputElement]);
+                });
         }
     }
 }

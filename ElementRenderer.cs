@@ -17,7 +17,7 @@ namespace SPZCapstoneVar2
             },
             ElementType.OR_GATE => new ORElementUserControl { RenderTransform = new TranslateTransform(element.PositionX, element.PositionY) },
             ElementType.NOT_GATE => new NOTElementUserControl { RenderTransform = new TranslateTransform(element.PositionX, element.PositionY) },
-            ElementType.INPUT_ELEMENT => new InputElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.INPUT_ELEMENT => new InputElementUserControl(connectionMouseLeftButtonDownHandler, element)
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },

@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox Name="ElementList" HorizontalAlignment="Left" Width="143" />
-        <Canvas Name="DesignCanvas" Background="White" Margin="148,10,0,0"/>
+        <ListBox Name="ElementList" HorizontalAlignment="Left" Width="143" Margin="0,25,0,0" />
+        <Canvas Name="DesignCanvas" Background="White" Margin="148,0,0,0"/>
+        <Button x:Name="SimulateButton" Content="Simulate" Height="20" Click="SimulateButton_Click" HorizontalAlignment="Left" Width="72" VerticalAlignment="Top"/>
     </Grid>
 </Window>
