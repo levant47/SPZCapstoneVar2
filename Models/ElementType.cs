@@ -10,5 +10,9 @@ namespace SPZCapstoneVar2.Models
         OR_GATE = 2,
         [Description("NOT gate")]
         NOT_GATE = 3,
+        [Description("Input Element")]
+        INPUT_ELEMENT = 4,
+        [Description("Output Element")]
+        OUTPUT_ELEMENT = 5,
     }
 }
