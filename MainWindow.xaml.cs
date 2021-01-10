@@ -86,10 +86,21 @@ namespace SPZCapstoneVar2
                 wire.PointTo(eventArgs1.GetPosition(DesignCanvas));
             };
             DesignCanvas.MouseMove += dragHandler;
-            MouseButtonEventHandler dragStopHandler = (object _sender2, MouseButtonEventArgs eventArgs2) =>
+            void dragStopHandler(object _sender2, MouseButtonEventArgs eventArgs2)
             {
                 DesignCanvas.MouseMove -= dragHandler;
-            };
+                DesignCanvas.MouseLeftButtonUp -= dragStopHandler;
+                var doesWireConnectToAnInputPin = DesignCanvas.Children
+                    .Cast<object>()
+                    .Where(child => child is IElementUserControl)
+                    .Cast<IElementUserControl>()
+                    .SelectMany(elementUserControl => elementUserControl.GetInputConnectionPins())
+                    .Any(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null);
+                if (!doesWireConnectToAnInputPin)
+                {
+                    DesignCanvas.Children.Remove(wire);
+                }
+            }
             DesignCanvas.MouseLeftButtonUp += dragStopHandler;
             DesignCanvas.Children.Add(wire);
         }

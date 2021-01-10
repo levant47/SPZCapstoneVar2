@@ -10,11 +10,11 @@ namespace SPZCapstoneVar2.UserControls
         {
             InitializeComponent();
 
-            InputPin1.PreviewMouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
-            InputPin2.PreviewMouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
             OutputPin.PreviewMouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
         }
 
         public List<ConnectionPinUserControl> GetConnectionPins() => new List<ConnectionPinUserControl> { InputPin1, InputPin2, OutputPin };
+
+        public List<ConnectionPinUserControl> GetInputConnectionPins() => new List<ConnectionPinUserControl> { InputPin1, InputPin2 };
     }
 }
