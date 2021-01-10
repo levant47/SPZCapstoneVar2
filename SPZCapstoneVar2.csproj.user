@@ -22,6 +22,9 @@
     <Compile Update="UserControls\ORElementUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\OutputElementUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\WireUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -43,6 +46,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ORElementUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\OutputElementUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\WireUserControl.xaml">
