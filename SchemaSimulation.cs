@@ -53,6 +53,21 @@ namespace SPZCapstoneVar2
                     }
                     return inputValues.Any(value => value == true);
                 }
+                case ElementType.NOT_GATE:
+                {
+                    var relatedInputId = _connections.FirstOrDefault(connection => connection.ToId == targetElement.Id)?.FromId;
+                    if (relatedInputId == null)
+                    {
+                        return null;
+                    }
+                    var relatedInput = _elements.First(element => element.Id == relatedInputId);
+                    var inputValue = CalculateValueFor(relatedInput);
+                    if (inputValue == null)
+                    {
+                        return null;
+                    }
+                    return !inputValue;
+                }
                 default: throw new NotImplementedException();
             }
         }
