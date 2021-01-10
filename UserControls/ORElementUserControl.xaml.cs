@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SPZCapstoneVar2.UserControls
 {
-    /// <summary>
-    /// Interaction logic for ORElementUserControl.xaml
-    /// </summary>
-    public partial class ORElementUserControl : UserControl
+    public partial class ORElementUserControl : UserControl, IElementUserControl
     {
-        public ORElementUserControl()
+        public ORElementUserControl(MouseButtonEventHandler connectionMouseLeftButtonDownHandler)
         {
             InitializeComponent();
+
+            OutputPin.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
         }
+
+        public List<ConnectionPinUserControl> GetConnectionPins() => new List<ConnectionPinUserControl> { InputPin1, InputPin2, OutputPin };
+
+        public List<ConnectionPinUserControl> GetInputConnectionPins() => new List<ConnectionPinUserControl> { InputPin1, InputPin2 };
     }
 }

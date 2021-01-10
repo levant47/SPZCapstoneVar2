@@ -9,9 +9,9 @@
     <Grid>
         <Rectangle HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="80" Margin="-41,-48,0,0"/>
         <Label Content="1" HorizontalAlignment="Left" Margin="-16,-27,0,0" VerticalAlignment="Top" FontSize="36"/>
-        <Ellipse HorizontalAlignment="Left" Height="6" Margin="-43,-26,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
-        <Ellipse HorizontalAlignment="Left" Height="6" Margin="-43,26,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
-        <Ellipse HorizontalAlignment="Left" Height="6" Margin="35,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="6" Fill="Black"/>
+        <local:ConnectionPinUserControl x:Name="OutputPin" HorizontalAlignment="Left" Height="6" Margin="35,-4,0,0" VerticalAlignment="Top" Width="7"/>
+        <local:ConnectionPinUserControl x:Name="InputPin1" HorizontalAlignment="Left" Height="7" Margin="-43,-24,0,0" VerticalAlignment="Top" Width="9"/>
+        <local:ConnectionPinUserControl x:Name="InputPin2" HorizontalAlignment="Left" Height="8" Margin="-43,23,0,0" VerticalAlignment="Top" Width="9"/>
 
     </Grid>
 </UserControl>
