@@ -10,15 +10,17 @@ namespace SPZCapstoneVar2.Models
         OR_GATE = 2,
         [Description("NOT gate")]
         NOT_GATE = 3,
-        [Description("Input Element")]
-        INPUT_ELEMENT = 4,
-        [Description("Output Element")]
-        OUTPUT_ELEMENT = 5,
         [Description("XOR gate")]
-        XOR_GATE = 6,
+        XOR_GATE = 4,
         [Description("NAND gate")]
-        NAND_GATE = 7,
+        NAND_GATE = 5,
         [Description("NOR gate")]
-        NOR_GATE = 8,
+        NOR_GATE = 6,
+        [Description("XNOR gate")]
+        XNOR_GATE = 7,
+        [Description("Input Element")]
+        INPUT_ELEMENT = 8,
+        [Description("Output Element")]
+        OUTPUT_ELEMENT = 9,
     }
 }

@@ -37,6 +37,9 @@
     <Compile Update="UserControls\WireUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\XNORElementUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\XORElementUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -73,6 +76,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\WireUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\XNORElementUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\XORElementUserControl.xaml">
