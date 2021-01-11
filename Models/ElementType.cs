@@ -14,5 +14,7 @@ namespace SPZCapstoneVar2.Models
         INPUT_ELEMENT = 4,
         [Description("Output Element")]
         OUTPUT_ELEMENT = 5,
+        [Description("XOR gate")]
+        XOR_GATE = 6,
     }
 }

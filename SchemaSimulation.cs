@@ -68,6 +68,17 @@ namespace SPZCapstoneVar2
                     }
                     return !inputValue;
                 }
+                case ElementType.XOR_GATE:
+                {
+                    var inputValues = _connections.Where(connection => connection.ToId == targetElement.Id)
+                        .Select(connection => CalculateValueFor(_elements.First(element => element.Id == connection.FromId)))
+                        .ToList();
+                    if (inputValues.Count == 0 || inputValues.Any(value => value == null))
+                    {
+                        return null;
+                    }
+                    return inputValues.Count(value => value == true) % 2 == 1;
+                }
                 default: throw new NotImplementedException();
             }
         }
