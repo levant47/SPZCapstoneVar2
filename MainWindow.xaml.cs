@@ -15,7 +15,7 @@ namespace SPZCapstoneVar2
     {
         private int NextId = 1;
         private readonly Dictionary<UIElement, Element> _elements = new Dictionary<UIElement, Element>();
-        private readonly List<Connection> _connections = new List<Connection>();
+        private readonly Dictionary<UIElement, Connection> _connections = new Dictionary<UIElement, Connection>();
 
         public MainWindow()
         {
@@ -134,7 +134,7 @@ namespace SPZCapstoneVar2
                     .First(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
                 var destinationElementId = _elements[destinationElement].Id;
 
-                _connections.Add(new Connection { FromId = originElementId, ToId = destinationElementId });
+                _connections.Add(wire, new Connection { FromId = originElementId, ToId = destinationElementId });
             }
             DesignCanvas.MouseLeftButtonUp += dragStopHandler;
             DesignCanvas.Children.Add(wire);
@@ -159,7 +159,7 @@ namespace SPZCapstoneVar2
 
         private void SimulateButton_Click(object sender, RoutedEventArgs e)
         {
-            var schemaSimulation = new SchemaSimulation(_elements.Values.ToList(), _connections);
+            var schemaSimulation = new SchemaSimulation(_elements.Values.ToList(), _connections.Values.ToList());
             DesignCanvas.Children
                 .Cast<UIElement>()
                 .Where(uiElement => uiElement is OutputElementUserControl)
@@ -173,8 +173,20 @@ namespace SPZCapstoneVar2
         private void ContextMenuRemoveOptionClick(object sender, RoutedEventArgs eventArgs)
         {
             var targetElementUserControl = ((sender as MenuItem)!.DataContext as UIElement)!;
+            var targetElementId = _elements[targetElementUserControl].Id;
+
+            // remove the element itself
             _elements.Remove(targetElementUserControl);
             DesignCanvas.Children.Remove(targetElementUserControl);
+
+            // remove all incoming and outgoing connections of the removed element
+            _connections.Where(wireConnectionPair => wireConnectionPair.Value.ToId == targetElementId
+                    || wireConnectionPair.Value.FromId == targetElementId)
+                .ForEach(wireConnectionPair =>
+                {
+                    _connections.Remove(wireConnectionPair.Key);
+                    DesignCanvas.Children.Remove(wireConnectionPair.Key);
+                });
         }
     }
 }
