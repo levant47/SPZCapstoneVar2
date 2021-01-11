@@ -11,4 +11,9 @@
         <Canvas Name="DesignCanvas" Background="White" Margin="148,0,0,0"/>
         <Button x:Name="SimulateButton" Content="Simulate" Height="20" Click="SimulateButton_Click" HorizontalAlignment="Left" Width="72" VerticalAlignment="Top"/>
     </Grid>
+    <Window.Resources>
+        <ContextMenu x:Key="elementContextMenu">
+            <MenuItem Header="Remove" />
+        </ContextMenu>
+    </Window.Resources>
 </Window>

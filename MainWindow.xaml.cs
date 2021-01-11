@@ -27,6 +27,7 @@ namespace SPZCapstoneVar2
             DesignCanvas.DragOver += HandleDesignFrameDragOver;
             DesignCanvas.PreviewDrop += HandleDesignFrameDrop;
             DesignCanvas.MouseMove += HandleDesignCanvasMouseMove;
+            DesignCanvas.MouseRightButtonDown += HandleRightButtonDown;
         }
 
         private void InitializeElementPanel()
@@ -41,6 +42,20 @@ namespace SPZCapstoneVar2
                     item.PreviewMouseLeftButtonDown += HandleElementListItemDragEnter;
                     ElementList.Items.Add(item);
                 });
+        }
+
+        private void HandleRightButtonDown(object sender, MouseButtonEventArgs eventArgs)
+        {
+            var targetElementUserControl = DesignCanvas.Children.Cast<UIElement>()
+                .Where(uiElement => uiElement is IElementUserControl)
+                .FirstOrDefault(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
+            if (targetElementUserControl != null)
+            {
+                var contextMenu = (FindResource("elementContextMenu") as ContextMenu)!;
+                contextMenu.PlacementTarget = targetElementUserControl;
+                contextMenu.IsOpen = true;
+                return;
+            }
         }
 
         private void HandleDesignCanvasMouseMove(object sender, MouseEventArgs eventArgs)
@@ -152,6 +167,10 @@ namespace SPZCapstoneVar2
                 {
                     outputElement.Value = schemaSimulation.CalculateValueFor(_elements[outputElement]);
                 });
+        }
+
+        private void HandleDeleteElement()
+        {
         }
     }
 }
