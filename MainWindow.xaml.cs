@@ -113,10 +113,11 @@ namespace SPZCapstoneVar2
             }
 
             // creating a wire
-            if ((targetElementUserControl as IElementUserControl)!.GetConnectionPins()
-                .Any(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null))
+            var originPin = (targetElementUserControl as IElementUserControl)!.GetConnectionPins()
+                .FirstOrDefault(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null);
+            if (originPin != null)
             {
-                StartWireCreation(_elements[targetElementUserControl].Id);
+                StartWireCreation(targetElementUserControl, originPin);
                 return;
             }
 
@@ -126,21 +127,48 @@ namespace SPZCapstoneVar2
 
         private void StartElementMove(UIElement targetElementUserControl)
         {
+            var targetElementId = _elements[targetElementUserControl].Id;
             MouseEventHandler handleMouseMove = (object sender, MouseEventArgs eventArgs) =>
             {
+                // move the element
                 var origin = targetElementUserControl.RenderTransformOrigin;
                 var mousePosition = Mouse.GetPosition(DesignCanvas);
-                targetElementUserControl.RenderTransform = new TranslateTransform(mousePosition.X - origin.X, mousePosition.Y - origin.Y);
+                var difference = new Point(mousePosition.X - origin.X, mousePosition.Y - origin.Y);
+                targetElementUserControl.RenderTransform = new TranslateTransform(difference.X, difference.Y);
+
+                // move its wires
+                var elementId = _elements[targetElementUserControl].Id;
+                _connections.Where(wireConnectionPair => wireConnectionPair.Value.IsConnectedTo(elementId))
+                    .ForEach(wireConnectionPair =>
+                    {
+                        var (wire, connection) = ((wireConnectionPair.Key as WireUserControl)!, wireConnectionPair.Value);
+                        var pinIndex = connection.FromId == targetElementId ? connection.FromPinIndex : connection.ToPinIndex;
+                        var pin = (targetElementUserControl as IElementUserControl)!.GetConnectionPins()[pinIndex];
+                        var newPinLocation = DesignCanvas.TranslatePoint(new Point(), pin);
+                        if (connection.FromId == targetElementId)
+                        {
+                            wire.RebaseTo(new Point(-newPinLocation.X, -newPinLocation.Y));
+                        }
+                        else
+                        {
+                            wire.PointTo(new Point(-newPinLocation.X, -newPinLocation.Y));
+                        }
+                    });
             };
             DesignCanvas.MouseMove += handleMouseMove;
+
+            var originalCursor = Mouse.OverrideCursor;
+            Mouse.OverrideCursor = Cursors.Hand;
             DesignCanvas.MouseUp += (object sender, MouseButtonEventArgs e) =>
             {
                 DesignCanvas.MouseMove -= handleMouseMove;
+                Mouse.OverrideCursor = originalCursor;
             };
         }
 
-        private void StartWireCreation(int originElementId)
+        private void StartWireCreation(UIElement originElement, ConnectionPinUserControl originPin)
         {
+            var originElementId = _elements[originElement].Id;
             var wire = new WireUserControl(Mouse.GetPosition(DesignCanvas));
             MouseEventHandler dragHandler = (object _sender1, MouseEventArgs eventArgs1) =>
             {
@@ -151,13 +179,13 @@ namespace SPZCapstoneVar2
             {
                 DesignCanvas.MouseMove -= dragHandler;
                 DesignCanvas.MouseLeftButtonUp -= dragStopHandler;
-                var doesWireConnectToAnInputPin = DesignCanvas.Children
+                var destinationPin = DesignCanvas.Children
                     .Cast<object>()
                     .Where(child => child is IElementUserControl)
                     .Cast<IElementUserControl>()
                     .SelectMany(elementUserControl => elementUserControl.GetInputConnectionPins())
-                    .Any(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null);
-                if (!doesWireConnectToAnInputPin)
+                    .FirstOrDefault(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null);
+                if (destinationPin == null)
                 {
                     DesignCanvas.Children.Remove(wire);
                     return;
@@ -170,7 +198,13 @@ namespace SPZCapstoneVar2
                     .First(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
                 var destinationElementId = _elements[destinationElement].Id;
 
-                _connections.Add(wire, new Connection { FromId = originElementId, ToId = destinationElementId });
+                _connections.Add(wire, new Connection
+                {
+                    FromId = originElementId,
+                    ToId = destinationElementId,
+                    FromPinIndex = (originElement as IElementUserControl)!.GetConnectionPins().IndexOf(originPin),
+                    ToPinIndex = (destinationElement as IElementUserControl)!.GetConnectionPins().IndexOf(destinationPin),
+                });
             }
             DesignCanvas.MouseLeftButtonUp += dragStopHandler;
             DesignCanvas.Children.Add(wire);
