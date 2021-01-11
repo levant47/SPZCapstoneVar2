@@ -27,13 +27,14 @@ namespace SPZCapstoneVar2.UserControls
             }
         }
 
+        public List<ConnectionPinUserControl> Pins { get; set; }
+
         public OutputElementUserControl()
         {
             InitializeComponent();
+
+            // haxx
+            Pins = new List<ConnectionPinUserControl> { InputPin, InputPin };
         }
-
-        public List<ConnectionPinUserControl> GetConnectionPins() => new List<ConnectionPinUserControl> { InputPin };
-
-        public List<ConnectionPinUserControl> GetInputConnectionPins() => new List<ConnectionPinUserControl> { InputPin };
     }
 }

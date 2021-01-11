@@ -6,15 +6,15 @@ namespace SPZCapstoneVar2.UserControls
 {
     public partial class ORElementUserControl : UserControl, IElementUserControl
     {
+        public List<ConnectionPinUserControl> Pins { get; set; }
+
         public ORElementUserControl(MouseButtonEventHandler connectionMouseLeftButtonDownHandler)
         {
             InitializeComponent();
 
+            Pins = new List<ConnectionPinUserControl> { OutputPin, InputPin1, InputPin2 };
+
             OutputPin.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
         }
-
-        public List<ConnectionPinUserControl> GetConnectionPins() => new List<ConnectionPinUserControl> { InputPin1, InputPin2, OutputPin };
-
-        public List<ConnectionPinUserControl> GetInputConnectionPins() => new List<ConnectionPinUserControl> { InputPin1, InputPin2 };
     }
 }

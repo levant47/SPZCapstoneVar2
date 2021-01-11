@@ -12,12 +12,14 @@ namespace SPZCapstoneVar2.UserControls
         private readonly Element _sourceElement;
 
         public bool Value { get; private set; } = false;
+        public List<ConnectionPinUserControl> Pins { get; set; }
 
         public InputElementUserControl(MouseButtonEventHandler connectionMouseLeftButtonDownHandler, Element sourceElement)
         {
             InitializeComponent();
 
             _sourceElement = sourceElement;
+            Pins = new List<ConnectionPinUserControl> { OutputPin };
 
             OutputPin.PreviewMouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
 
@@ -31,9 +33,5 @@ namespace SPZCapstoneVar2.UserControls
             _sourceElement.InputElementValue = Value;
             ValueLabel.Content = Value ? "1" : "0";
         }
-
-        public List<ConnectionPinUserControl> GetConnectionPins() => new List<ConnectionPinUserControl> { OutputPin };
-
-        public List<ConnectionPinUserControl> GetInputConnectionPins() => new List<ConnectionPinUserControl>();
     }
 }

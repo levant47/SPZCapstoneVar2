@@ -4,8 +4,6 @@ namespace SPZCapstoneVar2.UserControls
 {
     public interface IElementUserControl
     {
-        List<ConnectionPinUserControl> GetConnectionPins();
-
-        List<ConnectionPinUserControl> GetInputConnectionPins();
+        List<ConnectionPinUserControl> Pins { get; set; }
     }
 }

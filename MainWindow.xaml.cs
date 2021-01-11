@@ -54,9 +54,16 @@ namespace SPZCapstoneVar2
             if (targetElementUserControl != null)
             {
                 var contextMenu = (FindResource("elementContextMenu") as ContextMenu)!;
+                var targetElement = _elements[targetElementUserControl];
                 contextMenu.PlacementTarget = targetElementUserControl;
                 contextMenu.IsOpen = true;
                 contextMenu.DataContext = targetElementUserControl;
+                contextMenu.Items.Cast<MenuItem>().ForEach(menuItem =>
+                    menuItem.Visibility = menuItem.Name == "ConfigureNumberOfPinsMenuItem"
+                            && new[] { ElementType.INPUT_ELEMENT, ElementType.OUTPUT_ELEMENT, ElementType.NOT_GATE }
+                                .Contains(targetElement.Type)
+                        ? Visibility.Visible
+                        : Visibility.Collapsed);
                 return;
             }
         }
@@ -67,7 +74,7 @@ namespace SPZCapstoneVar2
                 .Cast<object>()
                 .Where(child => child is IElementUserControl)
                 .Cast<IElementUserControl>()
-                .SelectMany(elementUserControl => elementUserControl.GetConnectionPins())
+                .SelectMany(elementUserControl => elementUserControl.Pins)
                 .ForEach(connectionPin =>
                 {
                     if (connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null)
@@ -113,7 +120,7 @@ namespace SPZCapstoneVar2
             }
 
             // creating a wire
-            var originPin = (targetElementUserControl as IElementUserControl)!.GetConnectionPins()
+            var originPin = (targetElementUserControl as IElementUserControl)!.Pins
                 .FirstOrDefault(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null);
             if (originPin != null)
             {
@@ -143,7 +150,7 @@ namespace SPZCapstoneVar2
                     {
                         var (wire, connection) = ((wireConnectionPair.Key as WireUserControl)!, wireConnectionPair.Value);
                         var pinIndex = connection.FromId == targetElementId ? connection.FromPinIndex : connection.ToPinIndex;
-                        var pin = (targetElementUserControl as IElementUserControl)!.GetConnectionPins()[pinIndex];
+                        var pin = (targetElementUserControl as IElementUserControl)!.Pins[pinIndex];
                         var newPinLocation = DesignCanvas.TranslatePoint(new Point(), pin);
                         if (connection.FromId == targetElementId)
                         {
@@ -183,7 +190,7 @@ namespace SPZCapstoneVar2
                     .Cast<object>()
                     .Where(child => child is IElementUserControl)
                     .Cast<IElementUserControl>()
-                    .SelectMany(elementUserControl => elementUserControl.GetInputConnectionPins())
+                    .SelectMany(elementUserControl => elementUserControl.Pins.Skip(1))
                     .FirstOrDefault(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null);
                 if (destinationPin == null)
                 {
@@ -202,8 +209,8 @@ namespace SPZCapstoneVar2
                 {
                     FromId = originElementId,
                     ToId = destinationElementId,
-                    FromPinIndex = (originElement as IElementUserControl)!.GetConnectionPins().IndexOf(originPin),
-                    ToPinIndex = (destinationElement as IElementUserControl)!.GetConnectionPins().IndexOf(destinationPin),
+                    FromPinIndex = (originElement as IElementUserControl)!.Pins.IndexOf(originPin),
+                    ToPinIndex = (destinationElement as IElementUserControl)!.Pins.IndexOf(destinationPin),
                 });
             }
             DesignCanvas.MouseLeftButtonUp += dragStopHandler;
@@ -257,6 +264,22 @@ namespace SPZCapstoneVar2
                     _connections.Remove(wireConnectionPair.Key);
                     DesignCanvas.Children.Remove(wireConnectionPair.Key);
                 });
+        }
+
+        private void HandleContextMenuOptionConfigureNumberOfPinsClick(object sender, RoutedEventArgs e)
+        {
+            var targetUserControl = ((sender as MenuItem)!.DataContext as IElementUserControl)!;
+            var targetUIElement = (targetUserControl as UIElement)!;
+            var targetElement = _elements[targetUIElement];
+            new ElementConfigurationWindow(targetUserControl.Pins.Count - 1, newNumberOfPins =>
+            {
+                // targetUserControl.ConnectionPinCount = newNumberOfPins;
+                _connections
+                    .Where(wireConnectionPair => wireConnectionPair.Value.ToId == targetElement.Id
+                        // +1 is accounting for the output pin which is supposed to always be the first one in the list
+                        && (wireConnectionPair.Value.ToPinIndex + 1) >= newNumberOfPins)
+                    .ForEach(wireConnectionPair => _connections.Remove(wireConnectionPair.Key));
+            });
         }
     }
 }

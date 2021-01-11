@@ -13,6 +13,7 @@
     </Grid>
     <Window.Resources>
         <ContextMenu x:Key="elementContextMenu">
+            <MenuItem Name="ConfigureNumberOfPinsMenuItem" Header="Configure number of pins" Click="HandleContextMenuOptionConfigureNumberOfPinsClick" />
             <MenuItem Header="Remove" Click="ContextMenuRemoveOptionClick" />
         </ContextMenu>
     </Window.Resources>
