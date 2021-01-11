@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SPZCapstoneVar2
 {
@@ -28,6 +29,7 @@ namespace SPZCapstoneVar2
             DesignCanvas.PreviewDrop += HandleDesignFrameDrop;
             DesignCanvas.MouseMove += HandleDesignCanvasMouseMove;
             DesignCanvas.MouseRightButtonDown += HandleRightButtonDown;
+            DesignCanvas.MouseLeftButtonDown += HandleMouseLeftButtonDown;
         }
 
         private void InitializeElementPanel()
@@ -96,15 +98,49 @@ namespace SPZCapstoneVar2
             eventArgs.Effects = DragDropEffects.Move;
         }
 
-        private void HandleConnectionMouseLeftButtonDown(object sender, MouseButtonEventArgs eventArgs)
+        private void HandleConnectionMouseLeftButtonDown1(object sender, MouseButtonEventArgs eventArgs)
         {
-            var originElement = DesignCanvas.Children
-                .Cast<object>()
-                .Where(child => child is IElementUserControl)
-                .Cast<UIElement>()
-                .First(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
-            var originElementId = _elements[originElement].Id;
+        }
 
+        private void HandleMouseLeftButtonDown(object sender, MouseButtonEventArgs eventArgs)
+        {
+            var targetElementUserControl = DesignCanvas.Children.Cast<UIElement>()
+                .Where(uiElement => uiElement is IElementUserControl)
+                .FirstOrDefault(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
+            if (targetElementUserControl == null)
+            {
+                return;
+            }
+
+            // creating a wire
+            if ((targetElementUserControl as IElementUserControl)!.GetConnectionPins()
+                .Any(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null))
+            {
+                StartWireCreation(_elements[targetElementUserControl].Id);
+                return;
+            }
+
+            // moving an element
+            StartElementMove(targetElementUserControl);
+        }
+
+        private void StartElementMove(UIElement targetElementUserControl)
+        {
+            MouseEventHandler handleMouseMove = (object sender, MouseEventArgs eventArgs) =>
+            {
+                var origin = targetElementUserControl.RenderTransformOrigin;
+                var mousePosition = Mouse.GetPosition(DesignCanvas);
+                targetElementUserControl.RenderTransform = new TranslateTransform(mousePosition.X - origin.X, mousePosition.Y - origin.Y);
+            };
+            DesignCanvas.MouseMove += handleMouseMove;
+            DesignCanvas.MouseUp += (object sender, MouseButtonEventArgs e) =>
+            {
+                DesignCanvas.MouseMove -= handleMouseMove;
+            };
+        }
+
+        private void StartWireCreation(int originElementId)
+        {
             var wire = new WireUserControl(Mouse.GetPosition(DesignCanvas));
             MouseEventHandler dragHandler = (object _sender1, MouseEventArgs eventArgs1) =>
             {
@@ -152,7 +188,7 @@ namespace SPZCapstoneVar2
                 PositionY = mousePosition.Y,
             };
             NextId++;
-            var renderedElement = ElementRenderer.Render(HandleConnectionMouseLeftButtonDown, newElement);
+            var renderedElement = ElementRenderer.Render(HandleConnectionMouseLeftButtonDown1, newElement);
             _elements.Add(renderedElement, newElement);
             DesignCanvas.Children.Add(renderedElement);
         }
