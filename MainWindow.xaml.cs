@@ -54,6 +54,7 @@ namespace SPZCapstoneVar2
                 var contextMenu = (FindResource("elementContextMenu") as ContextMenu)!;
                 contextMenu.PlacementTarget = targetElementUserControl;
                 contextMenu.IsOpen = true;
+                contextMenu.DataContext = targetElementUserControl;
                 return;
             }
         }
@@ -169,8 +170,11 @@ namespace SPZCapstoneVar2
                 });
         }
 
-        private void HandleDeleteElement()
+        private void ContextMenuRemoveOptionClick(object sender, RoutedEventArgs eventArgs)
         {
+            var targetElementUserControl = ((sender as MenuItem)!.DataContext as UIElement)!;
+            _elements.Remove(targetElementUserControl);
+            DesignCanvas.Children.Remove(targetElementUserControl);
         }
     }
 }

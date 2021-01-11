@@ -13,7 +13,7 @@
     </Grid>
     <Window.Resources>
         <ContextMenu x:Key="elementContextMenu">
-            <MenuItem Header="Remove" />
+            <MenuItem Header="Remove" Click="ContextMenuRemoveOptionClick" />
         </ContextMenu>
     </Window.Resources>
 </Window>
