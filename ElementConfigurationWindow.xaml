@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SPZCapstoneVar2"
         mc:Ignorable="d"
-        Title="ElementConfigurationWindow" Height="97" Width="247">
+        Title="ElementConfigurationWindow" Height="131" Width="247">
     <Grid>
         <Label Content="Number of pins" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top"/>
         <Button Content="Submit" HorizontalAlignment="Left" Margin="17,50,0,0" VerticalAlignment="Top" Click="HandleSubmit"/>

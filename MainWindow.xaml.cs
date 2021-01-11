@@ -62,8 +62,8 @@ namespace SPZCapstoneVar2
                     menuItem.Visibility = menuItem.Name == "ConfigureNumberOfPinsMenuItem"
                             && new[] { ElementType.INPUT_ELEMENT, ElementType.OUTPUT_ELEMENT, ElementType.NOT_GATE }
                                 .Contains(targetElement.Type)
-                        ? Visibility.Visible
-                        : Visibility.Collapsed);
+                        ? Visibility.Collapsed
+                        : Visibility.Visible);
                 return;
             }
         }
@@ -124,6 +124,11 @@ namespace SPZCapstoneVar2
                 .FirstOrDefault(connectionPin => connectionPin.InputHitTest(Mouse.GetPosition(connectionPin)) != null);
             if (originPin != null)
             {
+                // if not an output pin
+                if ((targetElementUserControl as IElementUserControl)!.Pins[0] != originPin)
+                {
+                    return;
+                }
                 StartWireCreation(targetElementUserControl, originPin);
                 return;
             }
@@ -273,13 +278,30 @@ namespace SPZCapstoneVar2
             var targetElement = _elements[targetUIElement];
             new ElementConfigurationWindow(targetUserControl.Pins.Count - 1, newNumberOfPins =>
             {
-                // targetUserControl.ConnectionPinCount = newNumberOfPins;
-                _connections
-                    .Where(wireConnectionPair => wireConnectionPair.Value.ToId == targetElement.Id
-                        // +1 is accounting for the output pin which is supposed to always be the first one in the list
-                        && (wireConnectionPair.Value.ToPinIndex + 1) >= newNumberOfPins)
-                    .ForEach(wireConnectionPair => _connections.Remove(wireConnectionPair.Key));
-            });
+                if (newNumberOfPins == targetUserControl.Pins.Count - 1)
+                {
+                    return;
+                }
+                if (newNumberOfPins > targetUserControl.Pins.Count - 1)
+                {
+                    for (var i = targetUserControl.Pins.Count - 1; i != newNumberOfPins; i++)
+                    {
+                        ElementRenderer.AddPin(targetUserControl);
+                    }
+                }
+                else
+                {
+                    for (var i = targetUserControl.Pins.Count - 1; i != newNumberOfPins; i--)
+                    {
+                        ElementRenderer.RemovePin(targetUserControl);
+                    }
+                    _connections
+                        .Where(wireConnectionPair => wireConnectionPair.Value.ToId == targetElement.Id
+                            // +1 is accounting for the output pin which is supposed to always be the first one in the list
+                            && (wireConnectionPair.Value.ToPinIndex + 1) >= newNumberOfPins)
+                        .ForEach(wireConnectionPair => _connections.Remove(wireConnectionPair.Key));
+                }
+            }).Show();
         }
     }
 }

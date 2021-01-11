@@ -25,6 +25,7 @@ namespace SPZCapstoneVar2
                 return;
             }
             _onSubmit(numberOfPins);
+            Close();
         }
     }
 }
