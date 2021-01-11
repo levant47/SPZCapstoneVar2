@@ -18,5 +18,7 @@ namespace SPZCapstoneVar2.Models
         XOR_GATE = 6,
         [Description("NAND gate")]
         NAND_GATE = 7,
+        [Description("NOR gate")]
+        NOR_GATE = 8,
     }
 }

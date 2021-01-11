@@ -90,6 +90,17 @@ namespace SPZCapstoneVar2
                     }
                     return !inputValues.All(value => value == true);
                 }
+                case ElementType.NOR_GATE:
+                {
+                    var inputValues = _connections.Where(connection => connection.ToId == targetElement.Id)
+                        .Select(connection => CalculateValueFor(_elements.First(element => element.Id == connection.FromId)))
+                        .ToList();
+                    if (inputValues.Count == 0 || inputValues.Any(value => value == null))
+                    {
+                        return null;
+                    }
+                    return !inputValues.Any(value => value == true);
+                }
                 default: throw new NotImplementedException();
             }
         }

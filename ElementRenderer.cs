@@ -38,6 +38,10 @@ namespace SPZCapstoneVar2
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
+            ElementType.NOR_GATE => new NORElementUserControl(connectionMouseLeftButtonDownHandler)
+            {
+                RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
+            },
             _ => throw new NotImplementedException(),
         };
 

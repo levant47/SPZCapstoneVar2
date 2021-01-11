@@ -298,8 +298,12 @@ namespace SPZCapstoneVar2
                     _connections
                         .Where(wireConnectionPair => wireConnectionPair.Value.ToId == targetElement.Id
                             // +1 is accounting for the output pin which is supposed to always be the first one in the list
-                            && (wireConnectionPair.Value.ToPinIndex + 1) >= newNumberOfPins)
-                        .ForEach(wireConnectionPair => _connections.Remove(wireConnectionPair.Key));
+                            && wireConnectionPair.Value.ToPinIndex >= newNumberOfPins)
+                        .ForEach(wireConnectionPair =>
+                        {
+                            _connections.Remove(wireConnectionPair.Key);
+                            DesignCanvas.Children.Remove(wireConnectionPair.Key);
+                        });
                 }
             }).Show();
         }
