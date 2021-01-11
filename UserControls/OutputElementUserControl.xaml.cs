@@ -34,7 +34,7 @@ namespace SPZCapstoneVar2.UserControls
             InitializeComponent();
 
             // haxx
-            Pins = new List<ConnectionPinUserControl> { InputPin, InputPin };
+            Pins = new List<ConnectionPinUserControl> { new ConnectionPinUserControl(), InputPin };
         }
     }
 }
