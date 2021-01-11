@@ -79,6 +79,17 @@ namespace SPZCapstoneVar2
                     }
                     return inputValues.Count(value => value == true) % 2 == 1;
                 }
+                case ElementType.NAND_GATE:
+                {
+                    var inputValues = _connections.Where(connection => connection.ToId == targetElement.Id)
+                        .Select(connection => CalculateValueFor(_elements.First(element => element.Id == connection.FromId)))
+                        .ToList();
+                    if (inputValues.Count == 0 || inputValues.Any(value => value == null))
+                    {
+                        return null;
+                    }
+                    return !inputValues.All(value => value == true);
+                }
                 default: throw new NotImplementedException();
             }
         }

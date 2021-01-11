@@ -19,6 +19,9 @@
     <Compile Update="UserControls\InputElementUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\NANDElementUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\NOTElementUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -49,6 +52,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\InputElementUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\NANDElementUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\NOTElementUserControl.xaml">
