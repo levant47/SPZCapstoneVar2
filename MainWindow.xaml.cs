@@ -105,10 +105,6 @@ namespace SPZCapstoneVar2
             eventArgs.Effects = DragDropEffects.Move;
         }
 
-        private void HandleConnectionMouseLeftButtonDown1(object sender, MouseButtonEventArgs eventArgs)
-        {
-        }
-
         private void HandleMouseLeftButtonDown(object sender, MouseButtonEventArgs eventArgs)
         {
             var targetElementUserControl = DesignCanvas.Children.Cast<UIElement>()
@@ -210,6 +206,12 @@ namespace SPZCapstoneVar2
                     .First(elementUserControl => elementUserControl.InputHitTest(Mouse.GetPosition(elementUserControl)) != null);
                 var destinationElementId = _elements[destinationElement].Id;
 
+                if (destinationElement == originElement || _connections.Values.Any(connection => connection.FromId == originElementId && connection.ToId == destinationElementId))
+                {
+                    DesignCanvas.Children.Remove(wire);
+                    return;
+                }
+
                 _connections.Add(wire, new Connection
                 {
                     FromId = originElementId,
@@ -234,7 +236,7 @@ namespace SPZCapstoneVar2
                 PositionY = mousePosition.Y,
             };
             NextId++;
-            var renderedElement = ElementRenderer.Render(HandleConnectionMouseLeftButtonDown1, newElement);
+            var renderedElement = ElementRenderer.Render(newElement);
             _elements.Add(renderedElement, newElement);
             DesignCanvas.Children.Add(renderedElement);
         }
@@ -306,6 +308,13 @@ namespace SPZCapstoneVar2
                         });
                 }
             }).Show();
+        }
+
+        private void HandleLineContextMenuItemRemove(object sender, RoutedEventArgs e)
+        {
+            var targetWire = ((sender as MenuItem)!.DataContext as WireUserControl)!;
+            DesignCanvas.Children.Remove(targetWire);
+            _connections.Remove(targetWire);
         }
     }
 }

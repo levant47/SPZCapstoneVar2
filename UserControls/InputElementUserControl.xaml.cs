@@ -14,14 +14,12 @@ namespace SPZCapstoneVar2.UserControls
         public bool Value { get; private set; } = false;
         public List<ConnectionPinUserControl> Pins { get; set; }
 
-        public InputElementUserControl(MouseButtonEventHandler connectionMouseLeftButtonDownHandler, Element sourceElement)
+        public InputElementUserControl(Element sourceElement)
         {
             InitializeComponent();
 
             _sourceElement = sourceElement;
             Pins = new List<ConnectionPinUserControl> { OutputPin };
-
-            OutputPin.PreviewMouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
 
             MouseDoubleClick += HandleMousDoubleClick;
         }

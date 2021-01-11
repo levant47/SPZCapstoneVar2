@@ -8,13 +8,11 @@ namespace SPZCapstoneVar2.UserControls
     {
         public List<ConnectionPinUserControl> Pins { get; set; }
 
-        public ORElementUserControl(MouseButtonEventHandler connectionMouseLeftButtonDownHandler)
+        public ORElementUserControl()
         {
             InitializeComponent();
 
             Pins = new List<ConnectionPinUserControl> { OutputPin, InputPin1, InputPin2 };
-
-            OutputPin.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
         }
     }
 }

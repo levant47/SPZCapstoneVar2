@@ -11,38 +11,38 @@ namespace SPZCapstoneVar2
 {
     public static class ElementRenderer
     {
-        public static UIElement Render(MouseButtonEventHandler connectionMouseLeftButtonDownHandler, Element element) => element.Type switch
+        public static UIElement Render(Element element) => element.Type switch
         {
-            ElementType.AND_GATE => new ANDElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.AND_GATE => new ANDElementUserControl()
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
-            ElementType.OR_GATE => new ORElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.OR_GATE => new ORElementUserControl()
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
-            ElementType.NOT_GATE => new NOTElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.NOT_GATE => new NOTElementUserControl()
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
-            ElementType.INPUT_ELEMENT => new InputElementUserControl(connectionMouseLeftButtonDownHandler, element)
+            ElementType.INPUT_ELEMENT => new InputElementUserControl(element)
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
             ElementType.OUTPUT_ELEMENT => new OutputElementUserControl { RenderTransform = new TranslateTransform(element.PositionX, element.PositionY) },
-            ElementType.XOR_GATE => new XORElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.XOR_GATE => new XORElementUserControl()
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
-            ElementType.NAND_GATE => new NANDElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.NAND_GATE => new NANDElementUserControl()
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
-            ElementType.NOR_GATE => new NORElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.NOR_GATE => new NORElementUserControl()
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },
-            ElementType.XNOR_GATE => new XNORElementUserControl(connectionMouseLeftButtonDownHandler)
+            ElementType.XNOR_GATE => new XNORElementUserControl()
             {
                 RenderTransform = new TranslateTransform(element.PositionX, element.PositionY),
             },

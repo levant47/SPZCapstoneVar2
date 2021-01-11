@@ -8,13 +8,12 @@ namespace SPZCapstoneVar2.UserControls
     {
         public List<ConnectionPinUserControl> Pins { get; set; }
 
-        public NOTElementUserControl(MouseButtonEventHandler connectionMouseLeftButtonDownHandler)
+        public NOTElementUserControl()
         {
             InitializeComponent();
 
             Pins = new List<ConnectionPinUserControl> { OutputPin, InputPin };
 
-            OutputPin.MouseLeftButtonDown += connectionMouseLeftButtonDownHandler;
             OutputPin.IsInverted = true;
         }
     }
