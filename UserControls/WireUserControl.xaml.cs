@@ -24,6 +24,13 @@ namespace SPZCapstoneVar2.UserControls
             Canvas.SetTop(this, startPosition.Y);
         }
 
+        public void SetColor(Color color)
+        {
+            Horiz1.Stroke = new SolidColorBrush(color);
+            Vert.Stroke = new SolidColorBrush(color);
+            Horiz2.Stroke = new SolidColorBrush(color);
+        }
+
         public void PointTo(Point newPosition)
         {
             _currentPosition = newPosition;

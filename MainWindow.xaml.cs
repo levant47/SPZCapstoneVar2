@@ -84,12 +84,9 @@ namespace SPZCapstoneVar2
                             connectionPin.IsHighlighted = true;
                         }
                     }
-                    else
+                    else if (connectionPin.IsHighlighted)
                     {
-                        if (connectionPin.IsHighlighted)
-                        {
-                            connectionPin.IsHighlighted = false;
-                        }
+                        connectionPin.IsHighlighted = false;
                     }
                 });
         }
@@ -246,11 +243,20 @@ namespace SPZCapstoneVar2
             var schemaSimulation = new SchemaSimulation(_elements.Values.ToList(), _connections.Values.ToList());
             DesignCanvas.Children
                 .Cast<UIElement>()
-                .Where(uiElement => uiElement is OutputElementUserControl)
-                .Cast<OutputElementUserControl>()
-                .ForEach(outputElement =>
+                .Where(uiElement => uiElement is IElementUserControl)
+                .ForEach(element =>
                 {
-                    outputElement.Value = schemaSimulation.CalculateValueFor(_elements[outputElement]);
+                    var computedValue = schemaSimulation.CalculateValueFor(_elements[element]);
+                    if (element is OutputElementUserControl)
+                    {
+                        (element as OutputElementUserControl)!.Value = computedValue;
+                    }
+                    var elementId = _elements[element].Id;
+                    _connections.Where(wireConnectionPair => wireConnectionPair.Value.FromId == elementId)
+                        .ForEach(wireConnectionPair =>
+                        {
+                            (wireConnectionPair.Key as WireUserControl)!.SetColor(computedValue == true ? Colors.Red : Colors.Black);
+                        });
                 });
         }
 
